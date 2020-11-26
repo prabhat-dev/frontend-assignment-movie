@@ -1,0 +1,71 @@
+<h1 class="title">Movies</h1>
+<div class="search">
+    <mat-form-field class="input-field"  appearance="outline">
+        <mat-label>Movie Title</mat-label>
+        <input matInput [formControl]="title" placeholder="Type movie title to search"
+               required>
+        <mat-error  *ngIf="title.invalid">Title is <strong>required</strong></mat-error>
+      </mat-form-field>
+      <button (click)="searchMovie()" mat-raised-button color="primary" id="search-button">Search</button>
+</div>
+<div *ngIf="!isMovie">
+  <p>{{error}}</p>
+</div>
+<div class="example-container mat-elevation-z8" *ngIf="records">
+<table mat-table [dataSource]="dataSource">
+
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()"
+                      [aria-label]="checkboxLabel()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)"
+                      [aria-label]="checkboxLabel(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+  
+    <!-- Title Column -->
+    <ng-container matColumnDef="Title">
+      <th mat-header-cell *matHeaderCellDef> Title </th>
+      <td mat-cell *matCellDef="let element"> {{element.Title}} </td>
+    </ng-container>
+  
+    <!-- Type Column -->
+    <ng-container matColumnDef="Type">
+      <th mat-header-cell *matHeaderCellDef> Type </th>
+      <td mat-cell *matCellDef="let element"> {{element.Type}} </td>
+    </ng-container>
+  
+    <!-- Year Column -->
+    <ng-container matColumnDef="Year">
+      <th mat-header-cell *matHeaderCellDef> Year </th>
+      <td mat-cell *matCellDef="let element"> {{element.Year}} </td>
+    </ng-container>
+  
+    <!-- Poster Column -->
+    <ng-container matColumnDef="Poster">
+      <th mat-header-cell *matHeaderCellDef> Poster </th>
+      <td mat-cell *matCellDef="let element"> <img src="{{element.Poster}}" width="100px" height="100px"> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Watch">
+        <th mat-header-cell *matHeaderCellDef> Watch </th>
+        <td mat-cell *matCellDef="let element"> <button mat-fab (click)="selection.toggle(element)">Play</button> </td>
+      </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+        >
+    </tr>
+  </table>
+  </div>
+
+  
